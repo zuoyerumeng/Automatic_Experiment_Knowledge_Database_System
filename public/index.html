@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库系统</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>1. 上传PDF（.pdf格式，文本/图片内容均支持）或知识图谱三元组的CSV表格（.csv格式），每行的三列元素分别为“实体,关系,实体”</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" accept=".pdf, .xlsx" required>
+        <button type="submit">上传</button>
+    </form>
+    <p id="statusMessage" style="display: none;"></p>
+    <textarea id="markdownInput" placeholder="请输入实验单元对应的markdown文本：" style="display: none;"></textarea>
+    <button id="submitMarkdown" style="display: none;">提交</button>
+    <script src="script.js"></script>
+    <!-- 将图片移动到这里 -->
+    <img src="images/KG.jpg" alt="人工智能知识图谱" style="margin-top: 20px;">
+</body>
+</html>
