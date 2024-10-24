@@ -8,3 +8,4 @@
 npm install
 npm start
 ~~~
+在浏览器打开[http://localhost:3000](http://localhost:3000)即可查看生成的网页
