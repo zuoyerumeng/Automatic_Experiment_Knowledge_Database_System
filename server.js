@@ -6,8 +6,8 @@ const fs = require('fs');
 const { ChatCompletion, setEnvVariable } = require('@baiducloud/qianfan');
 
 // 设置安全认证AK/SK鉴权
-setEnvVariable('QIANFAN_ACCESS_KEY', 'ALTAKsVB2mb0lrrAmypmqZut6z');
-setEnvVariable('QIANFAN_SECRET_KEY', 'd07fce83c7f0420ab4c52b5b9d5265d8');
+setEnvVariable('QIANFAN_ACCESS_KEY', '');
+setEnvVariable('QIANFAN_SECRET_KEY', '');
 
 const app = express();
 app.use(express.json());
