@@ -104,12 +104,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.csvFile) {
+            if (data.jsonFile) {
                 statusMessage.textContent = '提取完成！';
                 const link = document.createElement('a');
-                link.href = data.csvFile;
-                link.download = 'triples.csv';
-                link.textContent = '下载提取出的三元组CSV文件';
+                link.href = data.jsonFile;
+                link.download = 'triples.json';
+                link.textContent = '下载提取出的三元组JSON文件';
                 document.body.appendChild(link);
             } else {
                 alert('提取失败，请重试。');
