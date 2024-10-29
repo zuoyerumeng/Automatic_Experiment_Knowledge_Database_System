@@ -57,6 +57,9 @@ app.post('/upload', upload.single('file'), (req, res) => {
     }
 });
 
+
+app.use(express.urlencoded({ extended: true }));
+
 app.post('/submit-markdown', async (req, res) => {
     const markdownText = req.body.markdown;
     const jsonExample = `
@@ -88,7 +91,7 @@ app.post('/submit-markdown', async (req, res) => {
             "安全组": "自动创建",
             "弹性公网IP": "116.63.62.38"
         }
-    }`;
+    },`;
     const prompt1 = `请先提取指定的、包含一个或多个实验单元的实验指导markdown文本中的'实体,关系,实体'格式三元组（不需要输出），具体内容为'前一步骤，先于，后一步骤'，用于构建知识图谱、指导用户实验，然后只需要输出两行txt格式的纯文本（输出首尾不需要用‘~~~ txt’的markdown语法渲染），第一行为所有实验名称（作为实体类型，要求仅输出内容，行首请勿输出'实验名称: '的提示词！），第二行为三元组中步骤（作为实体）的所有属性名，包含步骤序号step_number等属性，用','分隔。实体信息的样例如下：\n${jsonExample}\n实验指导markdown文本如下：\n${markdownText}`;
 
     try {
@@ -106,10 +109,16 @@ app.post('/submit-markdown', async (req, res) => {
 
         const resultText1 = response1.result;
         const textFilePath = path.join(__dirname, 'uploads', 'experiments_and_attributes.txt');
-        fs.writeFileSync(textFilePath, resultText1, 'utf-8');
+
+        // 检查文件是否存在并追加内容
+        if (fs.existsSync(textFilePath)) {
+            fs.appendFileSync(textFilePath, '\n' + resultText1, 'utf8');
+        } else {
+            fs.writeFileSync(textFilePath, resultText1, 'utf-8');
+        }
 
         // 第二轮问答
-        const prompt2 = `请基于上一轮问答的实验指导markdown文本、已经提取出的所有步骤属性等，输出所有步骤（每个步骤都单独作为一个实体）信息的JSON文本（输出首尾不需要用‘~~~ json’的markdown语法渲染），每个实验单元的所有步骤实体分别放在同一个数组中，其中每个步骤实体包含该步骤实体的名称（键为name，值为概括出的步骤作用）、实体类型（键为'category',值为实验名）和其他所有属性（键为属性名，值为属性值）。JSON格式步骤实体信息的样例如下：\n${jsonExample}\n实验指导markdown文本如下：\n${markdownText}`; 
+        const prompt2 = `请基于上一轮问答的实验指导markdown文本、已经提取出的所有步骤属性等，输出所有步骤实体信息的JSON格式文本（每个步骤都单独作为一个实体，输出首尾不需要用‘~~~ json’的markdown语法渲染和中括号'['、']'），每个步骤实体包含该步骤实体的名称（键为name，值为概括出的步骤作用）、实体类型（键为'category',值为实验名）和其他所有属性（键为属性名，值为属性值）。JSON格式步骤实体信息的样例如下：\n${jsonExample}\n实验指导markdown文本如下：\n${markdownText}`; 
         const response2 = await client.chat({
             messages: [
                 {
@@ -119,11 +128,26 @@ app.post('/submit-markdown', async (req, res) => {
             ],
         }, 'ERNIE-4.0-Turbo-8K');
 
-        const resultText2 = response2.result;
-        const jsonFilePath = path.join(__dirname, 'uploads', 'ontology.json');
-        fs.writeFileSync(jsonFilePath, resultText2, 'utf-8');
+        let resultText2 = response2.result;
+        
+        // 去掉首尾两行
+        // const lines = resultText2.split('\n');
+        // if (lines.length > 2) {
+        //     resultText2 = lines.slice(1, -1).join('\n');
+        // }
 
-        res.json({ message: '提取完成！', textFile: `/uploads/entity_labels_and_attributes.txt`, jsonFile: `/uploads/ontology.json` });
+        const jsonFilePath = path.join(__dirname, 'uploads', 'ontology.json');
+
+        // 检查文件是否存在并追加内容
+        if (fs.existsSync(jsonFilePath)) {
+            const existingContent = fs.readFileSync(jsonFilePath, 'utf-8');
+            const newContent = existingContent.trim() + ',\n' + resultText2;
+            fs.writeFileSync(jsonFilePath, newContent, 'utf-8');
+        } else {
+            fs.writeFileSync(jsonFilePath, resultText2, 'utf-8');
+        }
+
+        res.json({ message: '提取完成！', textFile: `/uploads/experiments_and_attributes.txt`, jsonFile: `/uploads/ontology.json` });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: '提取失败，请重试。' });
