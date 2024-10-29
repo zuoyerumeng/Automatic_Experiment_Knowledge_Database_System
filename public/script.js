@@ -1,11 +1,9 @@
 document.getElementById('uploadForm').addEventListener('submit', function(event) {
     event.preventDefault();
-    
     const fileInput = document.getElementById('fileInput');
+    const statusMessage = document.getElementById('statusMessage');
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
-
-    const statusMessage = document.getElementById('statusMessage');
     statusMessage.textContent = '正在上传...';
     statusMessage.style.display = 'block';
 
@@ -15,42 +13,30 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     })
     .then(response => response.json())
     .then(data => {
-        if (data.message === '上传成功！') {
-            alert(data.message);
-            // 显示“正在识别markdown...”提示
-            statusMessage.textContent = '正在识别markdown...';
-
-            // 移除之前的下载链接
-            const existingLink = document.querySelector('.download-link');
-            if (existingLink) {
-                existingLink.remove();
-            }
-
-            if (data.markdownFile) {
-                // 轮询检查文件是否生成
-                const checkFileInterval = setInterval(() => {
-                    fetch(data.markdownFile, { method: 'HEAD' })
-                        .then(response => {
-                            if (response.ok) {
-                                clearInterval(checkFileInterval);
-                                statusMessage.style.display = 'none';
-                                const downloadLink = document.createElement('a');
-                                downloadLink.href = data.markdownFile;
-                                downloadLink.download = data.markdownFile.split('/').pop();
-                                downloadLink.textContent = '下载识别出的Markdown文件';
-                                downloadLink.className = 'download-link';
-                                document.body.appendChild(downloadLink);
-                            }
-                        });
-                }, 1000);
-            }
+        statusMessage.style.display = 'block';
+        if (data.markdownFile) {
+            statusMessage.textContent = '上传成功！';
+            const link = document.createElement('a');
+            link.href = data.markdownFile;
+            link.download = 'triples.md';
+            link.textContent = '下载识别出的Markdown文件';
+            document.body.appendChild(link);
+        } else if (data.jsonFile) {
+            statusMessage.textContent = '上传成功！';
+            const link = document.createElement('a');
+            link.href = data.jsonFile;
+            link.download = 'triples.json';
+            link.textContent = '下载上传的JSON文件';
+            document.body.appendChild(link);
         } else {
-            statusMessage.textContent = data.message;
+            alert('上传失败，请重试。');
+            statusMessage.style.display = 'none';
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        statusMessage.textContent = '上传失败，请重试。';
+        alert('上传失败，请重试。');
+        statusMessage.style.display = 'none';
     });
 });
 
@@ -108,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 statusMessage.textContent = '提取完成！';
                 const link = document.createElement('a');
                 link.href = data.jsonFile;
-                link.download = 'triples.json';
-                link.textContent = '下载提取出的三元组JSON文件';
+                link.download = 'ontology.json';
+                link.textContent = '下载提取出的本体信息的JSON文件';
                 document.body.appendChild(link);
             } else {
                 alert('提取失败，请重试。');
