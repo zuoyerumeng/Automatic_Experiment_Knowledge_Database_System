@@ -62,42 +62,87 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post('/submit-markdown', async (req, res) => {
     const markdownText = req.body.markdown;
-    const jsonExample = `
-    {
-        "name": "配置集群基本信息",
-        "category": "开通 MapReduce 服务",
-        "step_number": "2",
-        "description": "点击“立即购买，进入购买集群页面，按照如下信息配置集群基本信息",
-        "actions": [
-            "点击立即购买",
-            "配置集群信息"
-        ],
-        "details": {
-            "区域": "华东-上海二",
-            "集群名称": "mrs-hcia",
-            "集群版本": "MRS2.1.0",
-            "集群类型": "混合集群",
-            "组件选择": [
-                "分析组件（除Presto, Impala, Kudu）",
-                "流式组件"
+    const jsonExample1 = `
+{
+    "Experiment": "管理华为云 MRS 服务",
+    "Steps": [
+        {
+            "name": "下载 Winscp",
+            "category": "使用Winscp在Window和Linux服务器之间传输文件",
+            "step_number": "1",
+            "description": "打开网址：https://winscp.net/eng/download.php 下载软件，安装完成后打开软件",
+            "actions": [
+                "打开网址下载Winscp",
+                "安装Winscp",
+                "打开Winscp"
             ],
-            "外部数据源": "不开启",
-            "Kerberos认证": "不开启",
-            "用户名": "admin",
-            "计费模式": "按需计费",
-            "可用分区": "默认",
-            "虚拟私有云": "default_vpc",
-            "子网": "default_subnet(192.16...)",
-            "安全组": "自动创建",
-            "弹性公网IP": "116.63.62.38"
+            "details": {}
+        },
+        {
+            "name": "连接服务器",
+            "category": "使用Winscp在Window和Linux服务器之间传输文件",
+            "step_number": "2",
+            "description": "在登录界面，填入申请的弹性 IP、端口号默认22、用户名、密码,点击登录，弹出框选择“Yes”",
+            "actions": [
+                "填入弹性IP、端口号、用户名、密码",
+                "点击登录",
+                "选择Yes"
+            ],
+            "details": {
+                "端口号": "22"
+            }
+        },
+        {
+            "name": "打开控制台",
+            "category": "访问集群的管理页面",
+            "step_number": "1",
+            "description": "在华为云 MRS 服务的控制台页面，单击集群名称“mrs-hcia”进入集群详情页面",
+            "actions": [
+                "打开华为云 MRS 服务的控制台页面",
+                "单击集群名称进入集群详情页面"
+            ],
+            "details": {
+                "集群名称": "mrs-hcia"
+            }
+        },
+        {
+            "name": "点击”点击查看”按钮",
+            "category": "访问集群的管理页面",
+            "step_number": "2",
+            "description": "在集群详情页面，点击”点击查看”按钮，进入集群管理页面，在弹出框中选择弹性IP（如果没有弹性IP，需要去购买），勾选确认框，点击”确定”",
+            "actions": [
+                "点击”点击查看”按钮",
+                "选择弹性IP",
+                "勾选确认框",
+                "点击确定"
+            ],
+            "details": {}
+        },
+        {
+            "name": "输入用户名及密码",
+            "category": "访问集群的管理页面",
+            "step_number": "3",
+            "description": "在弹出页面中输入用户名：admin及密码（密码是在申请集群时设置），点击“登录”",
+            "actions": [
+                "输入用户名及密码",
+                "点击登录"
+            ],
+            "details": {
+                "用户名": "admin"
+            }
         }
-    },`;
-    const prompt1 = `请先提取指定的、包含一个或多个实验单元的实验指导markdown文本中的'实体,关系,实体'格式三元组（不需要输出），具体内容为'前一步骤，先于，后一步骤'，用于构建知识图谱、指导用户实验，然后只需要输出两行txt格式的纯文本（输出首尾不需要用‘~~~ txt’的markdown语法渲染），第一行为所有实验名称（作为实体类型，要求仅输出内容，行首请勿输出'实验名称: '的提示词！），第二行为三元组中步骤（作为实体）的所有属性名，包含步骤序号step_number等属性，用','分隔。实体信息的样例如下：\n${jsonExample}\n实验指导markdown文本如下：\n${markdownText}`;
+    ],
+    "Knowledge": [
+        "winscp",
+        "MRS"
+    ]
+}`;
+
+        // 第一轮问答
+        const prompt1 = `请提取出给定一个或多个实验单元的实验指导markdown文本所包含本体信息和‘实体,关系,实体’三元组的JSON格式文本，用于构建知识图谱和指导用户按照步骤完成实验。只需要输出JSON文本内容，不需要其他任何解释内容。示例如下，其中"Experiment"为所有实验单元所属的总实验的名称，"Steps"为某个实验单元的实验步骤，它的"name"为某个实验步骤的名称、"category"为该实验步骤所属的实验单元、"step_number"为该实验步骤的步骤序号、"description"为该实验步骤的描述、"actions"为该实验步骤的具体操作、"details"为该实验步骤的具体细节，"Knowledges"中为所有三元组的实体的名称：\n${jsonExample1}\n实验指导markdown文本如下：\n${markdownText}`;
 
     try {
         const client = new ChatCompletion();
-        
-        // 第一轮问答
         const response1 = await client.chat({
             messages: [
                 {
@@ -107,20 +152,56 @@ app.post('/submit-markdown', async (req, res) => {
             ],
         }, 'ERNIE-4.0-Turbo-8K');
 
-        const resultText1 = response1.result;
-        const textFilePath = path.join(__dirname, 'uploads', 'experiments_and_attributes.txt');
+        let resultText1 = response1.result;
+        const lines1 = resultText1.split('\n');
+        if (lines1.length > 2) {
+            resultText1 = lines1.slice(1, -1).join('\n');
+        }
+        // 处理第一轮问答结果
+        const jsonFilePath1 = path.join(__dirname, 'uploads', 'data.json');
 
         // 检查文件是否存在并追加内容
-        if (fs.existsSync(textFilePath)) {
-            fs.appendFileSync(textFilePath, '\n' + resultText1, 'utf8');
+        if (fs.existsSync(jsonFilePath1)) {
+            const existingContent = fs.readFileSync(jsonFilePath, 'utf-8');
+            const newContent = existingContent.trim() + ',\n' + resultText1;
+            fs.writeFileSync(jsonFilePath1, newContent, 'utf-8');
         } else {
-            fs.writeFileSync(textFilePath, resultText1, 'utf-8');
+            fs.writeFileSync(jsonFilePath1, resultText1, 'utf-8');
         }
 
         // 第二轮问答
-        const prompt2 = `请基于上一轮问答的实验指导markdown文本、已经提取出的所有步骤属性等，输出所有步骤实体信息的JSON格式文本（每个步骤都单独作为一个实体，输出首尾不需要用‘~~~ json’的markdown语法渲染和中括号'['、']'），每个步骤实体包含该步骤实体的名称（键为name，值为概括出的步骤作用）、实体类型（键为'category',值为实验名）和其他所有属性（键为属性名，值为属性值）。JSON格式步骤实体信息的样例如下：\n${jsonExample}\n实验指导markdown文本如下：\n${markdownText}`; 
+        const jsonExample2 = `{   
+    "knowledge":
+    [
+        {
+            "name": "Winscp",
+            "category": "软件",
+            "description": "WinSCP 是一个 Windows 环境下使用的 SSH (Secure Shell) 的图形化 SFTP 客户端。同时支持 SCP 协议。它的主要功能是在本地和远程计算机之间安全地复制文件。"
+        },
+        {
+            "name": "MRS",
+            "category": "服务",
+            "description": "华为云 MRS 服务是一种大数据处理服务，提供了多种大数据处理引擎，包括 Spark、Hive、HBase、Storm、Flink、Kafka、Hudi、Presto、Druid、Kylin、TensorFlow 等，支持多种大数据处理场景。"
+        },
+        {
+            "name": "MApReduce",
+            "category": "计算模型",
+            "description": "MapReduce 是 Google 提出的一种分布式计算编程模型，用于大规模数据集（大于 1TB）的并行计算。"
+        }
+    ]
+}`;
+
+        const prompt2 = `请根据上一轮问答中的三元组实体，进一步提取出实体的具体信息的JSON格式文本。只需要输出JSON文本内容，不需要其他任何解释内容。示例如下，其中的"name"为实体的名称、"category"为该实体的类型、"description"为该实体的具体描述：\n${jsonExample2}`;
         const response2 = await client.chat({
             messages: [
+                {
+                    role: 'user',
+                    content: prompt1,
+                },
+                {
+                     role: "assistant",
+                     content: resultText1,
+                 },
                 {
                     role: 'user',
                     content: prompt2,
@@ -129,25 +210,26 @@ app.post('/submit-markdown', async (req, res) => {
         }, 'ERNIE-4.0-Turbo-8K');
 
         let resultText2 = response2.result;
-        
-        // 去掉首尾两行
-        // const lines = resultText2.split('\n');
-        // if (lines.length > 2) {
-        //     resultText2 = lines.slice(1, -1).join('\n');
-        // }
-
-        const jsonFilePath = path.join(__dirname, 'uploads', 'ontology.json');
+        const lines2 = resultText2.split('\n');
+        if (lines2.length > 2) {
+            resultText2 = lines2.slice(1, -1).join('\n');
+        }
+        const jsonFilePath2 = path.join(__dirname, 'uploads', 'knowledge.json');
 
         // 检查文件是否存在并追加内容
-        if (fs.existsSync(jsonFilePath)) {
-            const existingContent = fs.readFileSync(jsonFilePath, 'utf-8');
-            const newContent = existingContent.trim() + ',\n' + resultText2;
-            fs.writeFileSync(jsonFilePath, newContent, 'utf-8');
+        if (fs.existsSync(jsonFilePath2)) {
+            fs.appendFileSync(jsonFilePath2, ',\n' + resultText2, 'utf8');
         } else {
-            fs.writeFileSync(jsonFilePath, resultText2, 'utf-8');
+            fs.writeFileSync(jsonFilePath2, resultText2, 'utf-8');
         }
 
-        res.json({ message: '提取完成！', textFile: `/uploads/experiments_and_attributes.txt`, jsonFile: `/uploads/ontology.json` });
+        // 返回响应
+        res.json({ 
+            message: '提取完成！', 
+            textFile: `/uploads/experiments_and_attributes.txt`, 
+            jsonFile: `/uploads/ontology.json`,
+            csvFile: `/uploads/triples.csv`
+        });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: '提取失败，请重试。' });
