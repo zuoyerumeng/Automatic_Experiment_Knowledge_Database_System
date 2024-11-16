@@ -139,7 +139,7 @@ app.post('/submit-markdown', async (req, res) => {
 }`;
 
         // 第一轮问答
-        const prompt1 = `请提取出给定一个或多个实验单元的实验指导markdown文本所包含本体信息和‘实体,关系,实体’三元组的JSON格式文本，用于构建知识图谱和指导用户按照步骤完成实验。只需要输出JSON文本内容，不需要其他任何解释内容。示例如下，其中"Experiment"为所有实验单元所属的总实验的名称，"Steps"为某个实验单元的实验步骤，它的"name"为某个实验步骤的名称、"category"为该实验步骤所属的实验单元、"step_number"为该实验步骤的步骤序号、"description"为该实验步骤的描述、"actions"为该实验步骤的具体操作、"details"为该实验步骤的具体细节，"Knowledges"中为所有三元组的实体的名称：\n${jsonExample1}\n实验指导markdown文本如下：\n${markdownText}`;
+        const prompt1 = `请提取出给定一个或多个实验单元的实验指导markdown文本所包含步骤本体信息和‘实体,关系,实体’三元组的JSON格式文本，用于构建知识图谱和指导用户按照步骤完成实验，要求把步骤拆分得尽可能多。只需要输出JSON文本内容，不需要其他任何解释内容。示例如下，其中"Experiment"为所有实验单元所属的总实验的名称，"Steps"为某个实验单元的实验步骤，它的"name"为某个实验步骤的名称、"category"为该实验步骤所属的实验单元、"step_number"为该实验步骤的步骤序号、"description"为该实验步骤的描述、"actions"为该实验步骤的具体操作、"details"为该实验步骤的具体细节，"Knowledges"中为所有三元组的实体的名称：\n${jsonExample1}\n实验指导markdown文本如下：\n${markdownText}`;
 
     try {
         const client = new ChatCompletion();
@@ -158,7 +158,7 @@ app.post('/submit-markdown', async (req, res) => {
             resultText1 = lines1.slice(1, -1).join('\n');
         }
         // 处理第一轮问答结果
-        const jsonFilePath1 = path.join(__dirname, 'uploads', 'data.json');
+        const jsonFilePath1 = path.join(__dirname, 'uploads', 'steps.json');
 
         // 检查文件是否存在并追加内容
         if (fs.existsSync(jsonFilePath1)) {
@@ -170,28 +170,25 @@ app.post('/submit-markdown', async (req, res) => {
         }
 
         // 第二轮问答
-        const jsonExample2 = `{   
-    "knowledge":
-    [
+        const jsonExample2=`
+{
+    "entities": [
         {
-            "name": "Winscp",
-            "category": "软件",
-            "description": "WinSCP 是一个 Windows 环境下使用的 SSH (Secure Shell) 的图形化 SFTP 客户端。同时支持 SCP 协议。它的主要功能是在本地和远程计算机之间安全地复制文件。"
-        },
-        {
-            "name": "MRS",
+            "entity_name": "MapReduce",
             "category": "服务",
-            "description": "华为云 MRS 服务是一种大数据处理服务，提供了多种大数据处理引擎，包括 Spark、Hive、HBase、Storm、Flink、Kafka、Hudi、Presto、Druid、Kylin、TensorFlow 等，支持多种大数据处理场景。"
-        },
-        {
-            "name": "MApReduce",
-            "category": "计算模型",
-            "description": "MapReduce 是 Google 提出的一种分布式计算编程模型，用于大规模数据集（大于 1TB）的并行计算。"
+            "description": "MapReduce是一种分布式计算框架",
+            "relations": [
+                {
+                    "relation_name": "开通",
+                    "relation_entities": [
+                        "步骤"
+                    ]
+                }
+            ]
         }
     ]
 }`;
-
-        const prompt2 = `请根据上一轮问答中的三元组实体，进一步提取出实体的具体信息的JSON格式文本。只需要输出JSON文本内容，不需要其他任何解释内容。示例如下，其中的"name"为实体的名称、"category"为该实体的类型、"description"为该实体的具体描述：\n${jsonExample2}`;
+        const prompt2 = `请基于上一轮问答中给定的实验指导markdown文本，先提取指定实验指导markdown文本中的‘实体,关系,实体’三元组（不需要输出），用于构建知识图谱、指导用户实验，然后提取三元组中实体的实体类型和属性组（多个属性名及其属性值）（也不需要输出），最后只需要输出所有实体信息的JSON格式文本，包含实体类型（键为"category"，值为实体类型名）、属性组（键为属性名，值为属性值）、与该实体相关的关系（键为关系名，值为该关系对应的一个或多个实体（即存在多个相同关系名的关系）组成的数组。实体中的近义词用相同的词语表示，实体信息具体的JSON格式如下：${jsonExample2}`;
         const response2 = await client.chat({
             messages: [
                 {
