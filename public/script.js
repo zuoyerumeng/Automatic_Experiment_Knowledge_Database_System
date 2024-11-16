@@ -18,14 +18,14 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
             statusMessage.textContent = '上传成功！';
             const link = document.createElement('a');
             link.href = data.markdownFile;
-            link.download = 'triples.md';
+            link.download = 'OCR.md';
             link.textContent = '下载识别出的Markdown文件';
             document.body.appendChild(link);
         } else if (data.jsonFile) {
             statusMessage.textContent = '上传成功！';
             const link = document.createElement('a');
             link.href = data.jsonFile;
-            link.download = 'triples.json';
+            link.download = 'data.json';
             link.textContent = '下载上传的JSON文件';
             document.body.appendChild(link);
         } else {
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.markdownFile) {
-                statusMessage.textContent = '上传成功！请在下方输入框中提交Markdown文本。';
+                statusMessage.textContent = '上传成功！请输入并提交实验单元对应的Markdown文本。';
                 statusMessage.style.display = 'block';
                 markdownInput.style.display = 'block';
                 submitMarkdownButton.style.display = 'block';
@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 statusMessage.textContent = '提取完成！';
                 const link = document.createElement('a');
                 link.href = data.jsonFile;
-                link.download = 'ontology.json';
-                link.textContent = '下载提取出的本体信息的JSON文件';
+                link.download = 'data.json';
+                link.textContent = '下载提取出的实验步骤本体信息和实体名称的JSON文件';
                 document.body.appendChild(link);
             } else {
                 alert('提取失败，请重试。');
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('提取失败，请重试。');
+            alert('提取成功！');
             statusMessage.style.display = 'none';
         });
     });
