@@ -5,10 +5,6 @@ const { exec } = require('child_process');
 const fs = require('fs');
 const { ChatCompletion, setEnvVariable } = require('@baiducloud/qianfan');
 
-// 设置安全认证AK/SK鉴权
-setEnvVariable('QIANFAN_ACCESS_KEY', '');
-setEnvVariable('QIANFAN_SECRET_KEY', '');
-
 const app = express();
 app.use(express.json());
 
@@ -239,6 +235,18 @@ app.use((err, req, res, next) => {
     } else {
         next();
     }
+});
+
+app.post('/run-scripts', (req, res) => {
+    exec('sudo python3 inputJSON.py && python3 inputKnowledge.py', (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error executing scripts: ${error}`);
+            return res.status(500).json({ message: 'failure' });
+        }
+        console.log(`stdout: ${stdout}`);
+        console.error(`stderr: ${stderr}`);
+        res.json({ message: 'success', graphUrl: 'http://localhost:7474' });
+    });
 });
 
 app.listen(3000, () => {
