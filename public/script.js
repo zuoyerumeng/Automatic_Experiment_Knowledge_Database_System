@@ -109,3 +109,28 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const runScriptsButton = document.createElement('button');
+    runScriptsButton.textContent = '绘制知识图谱';
+    document.body.appendChild(runScriptsButton);
+
+    runScriptsButton.addEventListener('click', function() {
+        fetch('/run-scripts', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'success') {
+                alert('知识图谱绘制成功！');
+                window.location.href = data.graphUrl;
+            } else {
+                alert('知识图谱绘制失败，请重试。');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('知识图谱绘制失败，请重试。');
+        });
+    });
+});
