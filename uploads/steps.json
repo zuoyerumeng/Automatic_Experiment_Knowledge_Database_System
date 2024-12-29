@@ -1,0 +1,167 @@
+{
+    "Experiment": "开通 MapReduce 服务",
+    "Steps": [
+        {
+            "name": "登录华为云网站",
+            "category": "开通 MapReduce 服务",
+            "step_number": "1",
+            "description": "登录华为云网站，在El企业智能中找到MapReduce服务",
+            "actions": [
+                "登录华为云网站",
+                "在El企业智能中找到MapReduce服务"
+            ],
+            "details": {}
+        },
+        {
+            "name": "进入购买集群页面",
+            "category": "开通 MapReduce 服务",
+            "step_number": "2",
+            "description": "点击“立即购买”，进入购买集群页面，配置集群基本信息",
+            "actions": [
+                "点击“立即购买”",
+                "配置集群基本信息"
+            ],
+            "details": {
+                "区域": "华东-上海二",
+                "集群名称": "自定义名称，例如mrs-hcia",
+                "集群版本": "MRS2.1.0",
+                "集群类型": "混合集群"
+            }
+        },
+        {
+            "name": "选择组件",
+            "category": "开通 MapReduce 服务",
+            "step_number": "3",
+            "description": "在选择组件环节，勾选分析组件和流式组件里除Presto、Impala、Kudu外所有的组件",
+            "actions": [
+                "勾选分析组件",
+                "勾选流式组件（除Presto、Impala、Kudu外）"
+            ],
+            "details": {}
+        },
+        {
+            "name": "配置外部数据源和Kerberos认证",
+            "category": "开通 MapReduce 服务",
+            "step_number": "4",
+            "description": "不开启外部数据源，Kerberos认证选择不开启，设置用户名和密码",
+            "actions": [
+                "不开启外部数据源",
+                "Kerberos认证选择不开启",
+                "设置用户名和密码"
+            ],
+            "details": {
+                "用户名": "admin",
+                "Kerberos认证": "不开启"
+            }
+        },
+        {
+            "name": "选择计费模式",
+            "category": "开通 MapReduce 服务",
+            "step_number": "5",
+            "description": "选择按需计费模式",
+            "actions": [
+                "选择按需计费模式"
+            ],
+            "details": {}
+        },
+        {
+            "name": "创建虚拟私有云",
+            "category": "开通 MapReduce 服务",
+            "step_number": "6",
+            "description": "点击“查看虚拟私有云”按钮，进入网络控制台，创建虚拟私有云",
+            "actions": [
+                "点击“查看虚拟私有云”按钮",
+                "进入网络控制台",
+                "创建虚拟私有云"
+            ],
+            "details": {}
+        },
+        {
+            "name": "配置网络",
+            "category": "开通 MapReduce 服务",
+            "step_number": "7",
+            "description": "回到购买集群页面，点击刷新按钮，选中创建的虚拟私有云，配置子网、安全组、弹性公网IP",
+            "actions": [
+                "回到购买集群页面",
+                "点击刷新按钮",
+                "选中创建的虚拟私有云",
+                "配置子网",
+                "配置安全组",
+                "配置弹性公网IP"
+            ],
+            "details": {}
+        },
+        {
+            "name": "配置实例",
+            "category": "开通 MapReduce 服务",
+            "step_number": "8",
+            "description": "配置集群节点实例规格和数量，包括Master、分析Core、流式Core",
+            "actions": [
+                "配置Master实例规格和数量",
+                "配置分析Core实例规格和数量",
+                "配置流式Core实例规格和数量"
+            ],
+            "details": {
+                "Master实例规格": "4核8GB",
+                "分析Core实例规格": "4核16GB",
+                "流式Core实例规格": "4核16GB"
+            }
+        },
+        {
+            "name": "设置登录方式",
+            "category": "开通 MapReduce 服务",
+            "step_number": "9",
+            "description": "默认选择密码登录方式，设置用户名和密码",
+            "actions": [
+                "选择密码登录方式",
+                "设置用户名",
+                "设置密码"
+            ],
+            "details": {
+                "用户名": "root"
+            }
+        },
+        {
+            "name": "进入高级配置",
+            "category": "开通 MapReduce 服务",
+            "step_number": "10",
+            "description": "点击下一步，进入高级配置，所有参数都选择默认",
+            "actions": [
+                "点击下一步",
+                "进入高级配置",
+                "选择默认参数"
+            ],
+            "details": {}
+        },
+        {
+            "name": "确认配置并购买",
+            "category": "开通 MapReduce 服务",
+            "step_number": "11",
+            "description": "确认配置参数无误后，点击“立即购买”",
+            "actions": [
+                "确认配置参数",
+                "点击“立即购买”"
+            ],
+            "details": {}
+        },
+        {
+            "name": "等待集群创建完成",
+            "category": "开通 MapReduce 服务",
+            "step_number": "12",
+            "description": "启动完成集群创建需要10分钟左右，完成后查看集群状态",
+            "actions": [
+                "等待集群创建完成",
+                "查看集群状态"
+            ],
+            "details": {}
+        }
+    ],
+    "Knowledge": [
+        "MapReduce",
+        "华为云",
+        "集群",
+        "Kerberos认证",
+        "虚拟私有云",
+        "弹性公网IP"
+    ]
+}
