@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知识库系统</title>
+    <title>实验过程知识库系统</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>1. 上传PDF（.pdf格式，文本/图片内容均支持）或知识图谱三元组JSON（.json格式）</h1>
+    <div id="app" class="app-container">
+        <h1>实验过程知识库系统</h1>
+        <!-- 原有表单及元素 -->
+    </div>
+    <h2>请上传PDF或知识图谱三元组JSON：</h2>
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" id="fileInput" accept=".pdf, .json" required>
+        <input type="file" id="fileInput" name="files" accept=".pdf, .json" multiple required>
         <button type="submit">上传</button>
     </form>
+    <p id="statusMessage"></p>
+    <h2>请输入实验单元对应的markdown文本：</h2>
     <p id="statusMessage" style="display: none;"></p>
-    <textarea id="markdownInput" placeholder="请输入实验单元对应的markdown文本：" style="display: none;"></textarea>
-    <button id="submitMarkdown" style="display: none;">提交</button>
+    <textarea id="markdownInput" placeholder="请输入实验单元对应的markdown文本："></textarea>
+    <button id="submitMarkdown">提交</button><br>
     <script src="script.js"></script>
+    <h2>绘制知识图谱：</h2>
     <!-- 将图片移动到这里 -->
     <img src="images/KG.jpg" alt="人工智能知识图谱" style="margin-top: 20px;">
 </body>
