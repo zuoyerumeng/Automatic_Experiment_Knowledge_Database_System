@@ -25,8 +25,8 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
             statusMessage.textContent = '上传成功！';
             const link = document.createElement('a');
             link.href = data.jsonFile;
-            link.download = 'data.json';
-            link.textContent = '下载上传的JSON文件';
+            link.download = 'ontology.xml';
+            link.textContent = '下载上传的XML文件';
             document.body.appendChild(link);
         } else {
             alert('上传失败，请重试。');
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     submitMarkdownButton.addEventListener('click', function () {
         const markdownText = markdownInput.value;
-        statusMessage.textContent = '正在提取三元组...';
+        statusMessage.textContent = '正在构建本体...';
         statusMessage.style.display = 'block';
 
         fetch('/submit-markdown', {
@@ -90,12 +90,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.jsonFile) {
-                statusMessage.textContent = '提取完成！';
+            if (data.xmlFile) {
+                statusMessage.textContent = '构建完成！';
                 const link = document.createElement('a');
-                link.href = data.jsonFile;
-                link.download = 'data.json';
-                link.textContent = '下载提取出的实验步骤本体信息和实体名称的JSON文件';
+                link.href = data.xmlFile;
+                link.download = 'ontology.xml';
+                link.textContent = '下载构建出的本体RDF XML文件';
                 document.body.appendChild(link);
             } else {
                 alert('提取失败，请重试。');
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function() {
     const runScriptsButton = document.createElement('button');
-    runScriptsButton.textContent = '绘制知识图谱';
+    runScriptsButton.textContent = '跳转到控制台';
     document.body.appendChild(runScriptsButton);
 
     runScriptsButton.addEventListener('click', function() {
@@ -122,15 +122,14 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.message === 'success') {
-                alert('知识图谱绘制成功！');
                 window.location.href = data.graphUrl;
             } else {
-                alert('知识图谱绘制失败，请重试。');
+                alert('跳转失败，请重试。');
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('知识图谱绘制失败，请重试。');
+            alert('跳转失败，请重试。');
         });
     });
 });
