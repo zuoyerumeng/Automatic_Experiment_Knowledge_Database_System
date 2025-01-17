@@ -1,0 +1,138 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:exp="http://example.org/experiment#">
+  <owl:Ontology rdf:about="http://example.org/experiment#">
+    <dc:title>实验过程知识本体</dc:title>
+    <dc:creator>某研究团队</dc:creator>
+    <dc:description>本体用于描述实验的全过程，包括实验类型、目的、要求（任务）、原理、环境、仪器设备、步骤、数据记录、结果、结果分析、讨论（优缺点与改进方法）和参考文献等信息，并定义各元素之间的关系。</dc:description>
+  </owl:Ontology>
+  
+  <!-- Experiment -->
+  <owl:NamedIndividual rdf:about="exp:Experiment_MapReduceServiceSetup">
+    <rdf:type rdf:resource="exp:Experiment"/>
+    <exp:hasName>开通 MapReduce 服务实验</exp:hasName>
+    <exp:hasDescription>本实验指导用户如何在华为云上开通并配置 MapReduce 服务。</exp:hasDescription>
+    <exp:hasStep>
+      <rdf:Bag>
+        <rdf:li rdf:resource="exp:Step_LoginHuaweiCloud"/>
+        <rdf:li rdf:resource="exp:Step_ConfigureCluster"/>
+        <rdf:li rdf:resource="exp:Step_CompletePurchase"/>
+      </rdf:Bag>
+    </exp:hasStep>
+  </owl:NamedIndividual>
+
+  <!-- Steps -->
+  <owl:NamedIndividual rdf:about="exp:Step_LoginHuaweiCloud">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>登录华为云网站</exp:hasName>
+    <exp:hasDescription>登录华为云网站，并导航至 MapReduce 服务页面。</exp:hasDescription>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="exp:Step_ConfigureCluster">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>配置集群信息</exp:hasName>
+    <exp:hasDescription>按照实验指导配置集群的基本信息，包括集群名称、版本、类型等。</exp:hasDescription>
+    <exp:hasSubStep>
+      <rdf:Bag>
+        <rdf:li rdf:resource="exp:SubStep_SelectRegion"/>
+        <rdf:li rdf:resource="exp:SubStep_SetClusterName"/>
+        <rdf:li rdf:resource="exp:SubStep_SelectClusterVersion"/>
+        <!-- Add more sub-steps as needed -->
+      </rdf:Bag>
+    </exp:hasSubStep>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="exp:Step_CompletePurchase">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>完成购买并启动集群</exp:hasName>
+    <exp:hasDescription>确认配置无误后，完成购买并等待集群启动。</exp:hasDescription>
+  </owl:NamedIndividual>
+
+  <!-- Sub-Steps (example) -->
+  <owl:NamedIndividual rdf:about="exp:SubStep_SelectRegion">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>选择区域</exp:hasName>
+    <exp:hasDescription>在实验中选择“华东-上海二”作为区域。</exp:hasDescription>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="exp:SubStep_SetClusterName">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>设置集群名称</exp:hasName>
+    <exp:hasDescription>自定义集群名称，如“mrs-hcia”。</exp:hasDescription>
+  </owl:NamedIndividual>
+
+  <owl:NamedIndividual rdf:about="exp:SubStep_SelectClusterVersion">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>选择集群版本</exp:hasName>
+    <exp:hasDescription>选择当前最新版本，如“MRS2.1.0”。</exp:hasDescription>
+  </owl:NamedIndividual>
+
+  <!-- Other elements such as Devices, DataRecords, Results, etc. can be added similarly -->
+
+</rdf:RDF>
+
+
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:exp="http://example.org/experiment#">
+  <owl:Ontology rdf:about="http://example.org/experiment#">
+    <dc:title>实验过程知识本体</dc:title>
+    <dc:creator>某研究团队</dc:creator>
+    <dc:description>本体用于描述实验的全过程，包括目的、要求、原理、环境、仪器设备、步骤、数据记录、结果、分析、讨论与参考文献等信息。</dc:description>
+  </owl:Ontology>
+  
+  <!-- 实验 -->
+  <owl:NamedIndividual rdf:about="exp:Exp002">
+    <rdf:type rdf:resource="exp:Experiment"/>
+    <exp:hasName>使用WinSCP在Window和Linux服务器之间传输文件</exp:hasName>
+    <exp:hasDescription>实验指导如何使用WinSCP工具在Window和Linux服务器之间进行文件传输。</exp:hasDescription>
+    <exp:hasStep>
+      <rdf:Bag>
+        <rdf:li rdf:resource="exp:Step1_Exp002"/>
+        <rdf:li rdf:resource="exp:Step2_Exp002"/>
+      </rdf:Bag>
+    </exp:hasStep>
+  </owl:NamedIndividual>
+  
+  <!-- 实验步骤1 -->
+  <owl:NamedIndividual rdf:about="exp:Step1_Exp002">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>下载并安装WinSCP</exp:hasName>
+    <exp:hasDescription>访问https://winscp.net/eng/download.php下载WinSCP软件，并进行安装。</exp:hasDescription>
+  </owl:NamedIndividual>
+  
+  <!-- 实验步骤2 -->
+  <owl:NamedIndividual rdf:about="exp:Step2_Exp002">
+    <rdf:type rdf:resource="exp:Step"/>
+    <exp:hasName>连接服务器</exp:hasName>
+    <exp:hasDescription>在WinSCP登录界面，填入申请的弹性IP、端口号（默认22）、用户名、密码，点击登录。</exp:hasDescription>
+  </owl:NamedIndividual>
+  
+  <!-- 其他必要的本体定义 -->
+  <owl:Class rdf:about="exp:Experiment">
+    <rdfs:label>实验</rdfs:label>
+    <rdfs:comment>完整的实验对象</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="exp:Step">
+    <rdfs:label>实验步骤</rdfs:label>
+    <rdfs:comment>实验过程中的具体操作顺序</rdfs:comment>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="exp:hasStep">
+    <rdfs:domain rdf:resource="exp:Experiment"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="exp:Step"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:label>包含步骤</rdfs:label>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="exp:hasName">
+    <rdfs:domain rdf:resource="rdf:Resource"/>
+    <rdfs:range rdf:resource="xsd:string"/>
+    <rdfs:label>名称</rdfs:label>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="exp:hasDescription">
+    <rdfs:domain rdf:resource="rdf:Resource"/>
+    <rdfs:range rdf:resource="xsd:string"/>
+    <rdfs:label>描述</rdfs:label>
+  </owl:DatatypeProperty>
+</rdf:RDF>

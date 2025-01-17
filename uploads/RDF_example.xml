@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:exp="http://example.org/experiment#">
+
+    <!--
+        1. 本体描述
+        2. 类 (Classes)
+        3. 对象属性 (Object Properties)
+        4. 数据属性 (Datatype Properties)
+        5. 个体 (Individuals)
+    -->
+
+    <!-- =====================
+         1. 本体描述
+       ===================== -->
+    <owl:Ontology rdf:about="http://example.org/experiment#">
+        <dc:title>实验过程知识本体</dc:title>
+        <dc:creator>某研究团队</dc:creator>
+        <dc:description>
+            本体用于描述实验的全过程，包括实验类型、目的、要求（任务）、原理、环境、仪器设备、步骤、数据记录、结果、结果分析、讨论（优缺点与改进方法）和参考文献等信息，并定义各元素之间的关系。
+        </dc:description>
+    </owl:Ontology>
+
+    <!-- =====================
+         2. 类 (Classes)
+       ===================== -->
+    <owl:Class rdf:about="exp:Experiment">
+        <rdfs:label xml:lang="zh">实验</rdfs:label>
+        <rdfs:comment xml:lang="zh">描述完整的实验对象</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:ExperimentType">
+        <rdfs:label xml:lang="zh">实验类型</rdfs:label>
+        <rdfs:comment xml:lang="zh">对实验进行分类，如分析化学实验等</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Method">
+        <rdfs:label xml:lang="zh">实验方法</rdfs:label>
+        <rdfs:comment xml:lang="zh">描述实验所采用的方法</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Purpose">
+        <rdfs:label xml:lang="zh">实验目的</rdfs:label>
+        <rdfs:comment xml:lang="zh">描述实验想要达到的目标</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Requirement">
+        <rdfs:label xml:lang="zh">实验要求/任务</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验需完成的任务或遵循的要求</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Principle">
+        <rdfs:label xml:lang="zh">实验原理</rdfs:label>
+        <rdfs:comment xml:lang="zh">基于化学/物理等理论进行解释</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Environment">
+        <rdfs:label xml:lang="zh">实验环境</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验进行时所处温度、湿度等环境因素</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Device">
+        <rdfs:label xml:lang="zh">仪器设备</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验中使用的各种仪器、设备</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Step">
+        <rdfs:label xml:lang="zh">实验步骤</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验过程中的具体操作步骤</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:DataRecord">
+        <rdfs:label xml:lang="zh">数据记录</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验过程中记录的数据</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Result">
+        <rdfs:label xml:lang="zh">实验结果</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验结束后获得的最终结论或测量结果</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Analysis">
+        <rdfs:label xml:lang="zh">结果分析</rdfs:label>
+        <rdfs:comment xml:lang="zh">对结果进行分析与讨论</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Discussion">
+        <rdfs:label xml:lang="zh">讨论</rdfs:label>
+        <rdfs:comment xml:lang="zh">对实验优缺点、改进方法等进行探讨</rdfs:comment>
+    </owl:Class>
+
+    <owl:Class rdf:about="exp:Reference">
+        <rdfs:label xml:lang="zh">参考文献</rdfs:label>
+        <rdfs:comment xml:lang="zh">实验所引用或参考的文献资料</rdfs:comment>
+    </owl:Class>
+
+    <!-- =====================
+         3. 对象属性 (Object Properties)
+       ===================== -->
+    <owl:ObjectProperty rdf:about="exp:hasMethod">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Method"/>
+        <rdfs:label xml:lang="zh">具有实验方法</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasType">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Type"/>
+        <rdfs:label xml:lang="zh">具有实验类型</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasPurpose">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Purpose"/>
+        <rdfs:label xml:lang="zh">具有实验目的</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasRequirement">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Requirement"/>
+        <rdfs:label xml:lang="zh">具有实验要求</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasPrinciple">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Principle"/>
+        <rdfs:label xml:lang="zh">具有实验原理</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasEnvironment">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Environment"/>
+        <rdfs:label xml:lang="zh">使用环境</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasStep">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Step"/>
+        <rdfs:label xml:lang="zh">包含步骤</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:usesDevice">
+        <rdfs:domain rdf:resource="exp:Step"/>
+        <rdfs:range rdf:resource="exp:Device"/>
+        <rdfs:label xml:lang="zh">使用设备</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasDataRecord">
+        <rdfs:domain rdf:resource="exp:Step"/>
+        <rdfs:range rdf:resource="exp:DataRecord"/>
+        <rdfs:label xml:lang="zh">数据记录</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasResult">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Result"/>
+        <rdfs:label xml:lang="zh">得到实验结果</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasAnalysis">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Analysis"/>
+        <rdfs:label xml:lang="zh">进行结果分析</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasDiscussion">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Discussion"/>
+        <rdfs:label xml:lang="zh">讨论</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:about="exp:hasReference">
+        <rdfs:domain rdf:resource="exp:Experiment"/>
+        <rdfs:range rdf:resource="exp:Reference"/>
+        <rdfs:label xml:lang="zh">参考文献</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- =====================
+         4. 数据属性 (Datatype Properties)
+       ===================== -->
+    <owl:DatatypeProperty rdf:about="exp:hasName">
+        <rdfs:domain rdf:resource="rdf:Resource"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:label xml:lang="zh">名称</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:about="exp:hasDescription">
+        <rdfs:domain rdf:resource="rdf:Resource"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:label xml:lang="zh">描述</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- =====================
+         5. 个体 (Individuals)
+       ===================== -->
+
+    <!-- 实验个体 -->
+    <owl:NamedIndividual rdf:about="exp:Exp001">
+        <rdf:type rdf:resource="exp:Experiment"/>
+        <exp:hasName xml:lang="zh">酸碱中和滴定实验</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            使用酸碱滴定法来测定未知溶液的浓度，演示滴定分析与实验操作流程。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 新增实验类型个体 -->
+    <owl:NamedIndividual rdf:about="exp:ExperimentType_AnalyticalChemistry">
+        <rdf:type rdf:resource="exp:ExperimentType"/>
+        <exp:hasName xml:lang="zh">分析化学实验</exp:hasName>
+        <exp:hasDescription xml:lang="zh">利用各种分析方法对化学物质进行定量或定性测定的实验类型</exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验方法个体 -->
+    <owl:NamedIndividual rdf:about="exp:Method_Exp001">
+        <rdf:type rdf:resource="exp:Method"/>
+        <exp:hasName xml:lang="zh">酸碱滴定法</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            利用标准酸或碱溶液与被测溶液进行中和反应，通过精确记录滴定体积来计算未知溶液的浓度。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验目的个体 -->
+    <owl:NamedIndividual rdf:about="exp:Purpose_Exp001">
+        <rdf:type rdf:resource="exp:Purpose"/>
+        <exp:hasDescription xml:lang="zh">
+            掌握滴定操作技巧与原理，测定溶液的pH值与准确浓度。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验要求(任务)个体 -->
+    <owl:NamedIndividual rdf:about="exp:Requirement_Exp001">
+        <rdf:type rdf:resource="exp:Requirement"/>
+        <exp:hasDescription xml:lang="zh">
+            1. 严格遵守安全操作规程；2. 精准读取滴定数据；3. 按规范计算结果。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验原理个体 -->
+    <owl:NamedIndividual rdf:about="exp:Principle_Exp001">
+        <rdf:type rdf:resource="exp:Principle"/>
+        <exp:hasDescription xml:lang="zh">
+            根据化学方程式与当量点概念，通过中和反应计算未知溶液的目标浓度。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验环境个体 -->
+    <owl:NamedIndividual rdf:about="exp:Environment_Exp001">
+        <rdf:type rdf:resource="exp:Environment"/>
+        <exp:hasDescription xml:lang="zh">
+            常温25℃，湿度50%，室内无强烈气流干扰。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 仪器设备个体 -->
+    <owl:NamedIndividual rdf:about="exp:Device_Exp001">
+        <rdf:type rdf:resource="exp:Device"/>
+        <exp:hasName xml:lang="zh">酸度计</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            测量溶液pH值的仪器，可辅助确定滴定终点。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="exp:Device_Exp002">
+        <rdf:type rdf:resource="exp:Device"/>
+        <exp:hasName xml:lang="zh">滴定管</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            精确量取溶液体积的玻璃管，用于控制滴定速率。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验步骤个体 -->
+    <owl:NamedIndividual rdf:about="exp:Step1">
+        <rdf:type rdf:resource="exp:Step"/>
+        <exp:hasName xml:lang="zh">配置标准溶液</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            称取准确质量的化学试剂，溶于适量去离子水并定容。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="exp:Step2">
+        <rdf:type rdf:resource="exp:Step"/>
+        <exp:hasName xml:lang="zh">滴定操作</exp:hasName>
+        <exp:hasDescription xml:lang="zh">
+            将标准溶液装入滴定管，逐滴加入被测溶液，并观察指示剂变色。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 数据记录个体 -->
+    <owl:NamedIndividual rdf:about="exp:DataRecord_Step1">
+        <rdf:type rdf:resource="exp:DataRecord"/>
+        <exp:hasDescription xml:lang="zh">
+            使用NaOH固体1.0g，溶解后配制至250ml，环境温度25℃。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <owl:NamedIndividual rdf:about="exp:DataRecord_Step2">
+        <rdf:type rdf:resource="exp:DataRecord"/>
+        <exp:hasDescription xml:lang="zh">
+            滴定前溶液pH值3.0；滴定至中性时读数为20.5ml，指示剂颜色变为浅粉。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 实验结果个体 -->
+    <owl:NamedIndividual rdf:about="exp:Result_Exp001">
+        <rdf:type rdf:resource="exp:Result"/>
+        <exp:hasDescription xml:lang="zh">
+            测得未知溶液浓度约为0.10mol/L，滴定终点清晰易辨。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 结果分析个体 -->
+    <owl:NamedIndividual rdf:about="exp:Analysis_Exp001">
+        <rdf:type rdf:resource="exp:Analysis"/>
+        <exp:hasDescription xml:lang="zh">
+            结果与理论计算值接近，误差主要来自于操作读数与溶液配制偏差。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 讨论个体 -->
+    <owl:NamedIndividual rdf:about="exp:Discussion_Exp001">
+        <rdf:type rdf:resource="exp:Discussion"/>
+        <exp:hasDescription xml:lang="zh">
+            优点：方法简便、易掌握；缺点：对操作技术与仪器精度要求较高。改进：可使用自动滴定设备，减少操作误差。
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- 参考文献个体 -->
+    <owl:NamedIndividual rdf:about="exp:Reference_Exp001">
+        <rdf:type rdf:resource="exp:Reference"/>
+        <exp:hasDescription xml:lang="zh">
+            [1] 《分析化学》，XX出版社，2022年；[2] Johnson, D. Acid-Base Titration. J. Chem. Ed., 2019.
+        </exp:hasDescription>
+    </owl:NamedIndividual>
+
+    <!-- =====================
+         利用 RDF 描述将所有子元素与实验关联
+       ===================== -->
+
+    <!-- 将实验与方法、目的、要求、原理、环境、步骤、结果、分析、讨论和参考文献关联 -->
+    <rdf:Description rdf:about="exp:Exp001">
+        <exp:hasMethod rdf:resource="exp:Method_Exp001"/>
+        <exp:hasPurpose rdf:resource="exp:Purpose_Exp001"/>
+        <exp:hasRequirement rdf:resource="exp:Requirement_Exp001"/>
+        <exp:hasPrinciple rdf:resource="exp:Principle_Exp001"/>
+        <exp:hasEnvironment rdf:resource="exp:Environment_Exp001"/>
+        <exp:hasStep rdf:resource="exp:Step1"/>
+        <exp:hasStep rdf:resource="exp:Step2"/>
+        <exp:hasResult rdf:resource="exp:Result_Exp001"/>
+        <exp:hasAnalysis rdf:resource="exp:Analysis_Exp001"/>
+        <exp:hasDiscussion rdf:resource="exp:Discussion_Exp001"/>
+        <exp:hasReference rdf:resource="exp:Reference_Exp001"/>
+    </rdf:Description>
+
+    <!-- 将步骤与设备和数据记录关联 -->
+    <rdf:Description rdf:about="exp:Step1">
+        <exp:usesDevice rdf:resource="exp:Device_Exp002"/>
+        <exp:hasDataRecord rdf:resource="exp:DataRecord_Step1"/>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="exp:Step2">
+        <exp:usesDevice rdf:resource="exp:Device_Exp001"/>
+        <exp:usesDevice rdf:resource="exp:Device_Exp002"/>
+        <exp:hasDataRecord rdf:resource="exp:DataRecord_Step2"/>
+    </rdf:Description>
+
+</rdf:RDF>
